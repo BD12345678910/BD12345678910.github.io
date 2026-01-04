@@ -4,7 +4,7 @@ import json
 from typing import Dict, Any
 import time
 import sql_functions
-api_key = "app-E5mnWlXIOEKgaIJdlecPoKYr"
+api_key = ""
 url = "http://localhost/v1/chat-messages"
 def call_dify_workflow(
     stu_id: int,
@@ -49,4 +49,5 @@ def call_dify_workflow(
         raise Exception(f"请求失败: {str(e)}")
 
 print(call_dify_workflow(0,0,0,'what is AI?','test_user','http://localhost/v1/chat-messages','' ,''))
+
 
