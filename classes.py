@@ -14,8 +14,8 @@ Query
 Class
 '''
 from datetime import datetime
-import sql_functions  # 导入数据库操作函数
-
+import sql_functions_v2 as sql_functions  # 导入数据库操作函数
+import matplotlib.pyplot as plt
 
 class Student:
     """学生类，对应Student_info表"""
@@ -35,7 +35,7 @@ class Student:
         self.stu_class = stu_class
         self.graduation_year = graduation_year
         self.stu_course = stu_course
-
+        self.stu_classes = sql_functions.get_student_classes(stu_id) if stu_id else []
     def save(self):
         """保存学生信息到数据库，返回生成的stu_id"""
         if self.stu_id is None:  # 新增学生
@@ -74,6 +74,7 @@ class Teacher:
         self.teacher_email = teacher_email
         self.teacher_subject = teacher_subject  # 主讲科目
         self.teacher_homeroom = teacher_homeroom  # 班主任班级
+        self.teacher_classes = sql_functions.get_teacher_class(teacher_id) if teacher_id else []
 
     def save(self):
         """保存教师信息到数据库，返回生成的teacher_id"""
@@ -87,7 +88,31 @@ class Teacher:
                 teacher_homeroom=self.teacher_homeroom
             )
         return self.teacher_id
-
+    def get_grades(self, classid):
+        """获取教师所教班级的学生成绩"""
+        return sql_functions.get_student_assignment_score(classid)
+    def grades_distribution(self, classid):
+        """获取教师所教班级的成绩分布情况"""
+        grades = self.get_grades(classid) # {student_id: {"total":总分, "avg":平均分, "complete":[所有作业分数列表]}}
+        plt.bar(sql_functions.ID2Name(grades.keys()), [grades[sid]['avg'] for sid in grades])
+        plt.xlabel('student Name')
+        plt.ylabel('homework average score')
+        plt.show()
+    def student_distribution(self, stuId, classid):
+        """获取某学生在某个班级的成绩分布情况"""
+        grades = self.get_grades(classid) # {student_id: {"total":总分, "avg":平均分, "complete":[所有作业分数列表]}}
+        student_grade = grades.get(stuId)
+        plt.hist(student_grade['complete'], bins=10, edgecolor='black')
+        plt.xlabel('Score Range')
+        plt.ylabel('Frequency')
+        plt.title(f'Student ID: {stuId} Score Distribution')
+        plt.show()
+    def class_word_cloud(self,classid):
+        sql_functions.word_cloud(classid) #classid}_word_cloud.png"
+    def class_histograph_word(self,classid):
+        sql_functions.histograph(classid) #{classid}_frequency_hist.png"
+    
+    
 
 class Class:
     """班级/课程类，对应Class_info表"""

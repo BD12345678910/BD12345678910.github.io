@@ -4,7 +4,7 @@ import os
 import tempfile
 from typing import Optional
 def get_url(file_path):
-    token = ""
+    token = "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIifQ.eyJqdGkiOiI3NDgwMDMyMSIsInJvbCI6IlJPTEVfUkVHSVNURVIiLCJpc3MiOiJPcGVuWExhYiIsImlhdCI6MTc2NzUyOTQwNSwiY2xpZW50SWQiOiJsa3pkeDU3bnZ5MjJqa3BxOXgydyIsInBob25lIjoiIiwib3BlbklkIjpudWxsLCJ1dWlkIjoiYmRhMWM5ZGMtYWRjNS00MTYyLThmMGMtMzEzNjY1M2EwNjA5IiwiZW1haWwiOiIiLCJleHAiOjE3Njg3MzkwMDV9.CDe6cVZoCWXwSVy_39IQH-7V7W9EeGS-BB06KWBkX3AXH9sVZleTTHBSaHL0tu8sK4bjpYzfV16HMeLvTARJPg"
     url = "https://mineru.net/api/v4/extract/task"
     header = {
         "Content-Type": "application/json",
@@ -90,5 +90,4 @@ def download_and_extract_full_md(zip_url: str, temp_dir: str) -> Optional[str]:
 
 file_path = "https://cdn-mineru.openxlab.org.cn/demo/example.pdf"
 zip_url = get_url(file_path)
-
 download_and_extract_full_md(zip_url, '.\\temp')
