@@ -14,7 +14,7 @@ Query
 Class
 '''
 from datetime import datetime
-import sql_functions_v2 as sql_functions  # 导入数据库操作函数
+from sql_functions_v3 import SQLManager as sql_functions
 import matplotlib.pyplot as plt
 
 class Student:
