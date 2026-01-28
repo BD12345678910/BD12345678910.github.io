@@ -3,6 +3,7 @@ import zipfile
 import os
 import tempfile
 from typing import Optional
+from logger import logger
 def get_url(file_path):
     token = "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFM1MTIifQ.eyJqdGkiOiI3NDgwMDMyMSIsInJvbCI6IlJPTEVfUkVHSVNURVIiLCJpc3MiOiJPcGVuWExhYiIsImlhdCI6MTc2NzUyOTQwNSwiY2xpZW50SWQiOiJsa3pkeDU3bnZ5MjJqa3BxOXgydyIsInBob25lIjoiIiwib3BlbklkIjpudWxsLCJ1dWlkIjoiYmRhMWM5ZGMtYWRjNS00MTYyLThmMGMtMzEzNjY1M2EwNjA5IiwiZW1haWwiOiIiLCJleHAiOjE3Njg3MzkwMDV9.CDe6cVZoCWXwSVy_39IQH-7V7W9EeGS-BB06KWBkX3AXH9sVZleTTHBSaHL0tu8sK4bjpYzfV16HMeLvTARJPg"
     url = "https://mineru.net/api/v4/extract/task"
@@ -16,9 +17,7 @@ def get_url(file_path):
     }
 
     res = requests.post(url,headers=header,json=data)
-    print(res.status_code)
-    print(res.json())
-    print(res.json()["data"])
+    logger.info(res.status_code)
     task_id = res.json()["data"]["task_id"]
     url = f"https://mineru.net/api/v4/extract/task/{task_id}"
     header = {
@@ -28,12 +27,11 @@ def get_url(file_path):
 
     while True:
         res = requests.get(url, headers=header)
-        print(res.status_code)
+        logger.info(res.status_code)
         if res.json()["data"]["state"] != "pending":
-            print(res.json()["data"]["full_zip_url"])
+            logger.info(res.json()["data"]["full_zip_url"])
             return res.json()["data"]["full_zip_url"]
-        print("waiting for result...")        
-
+        logger.info("waiting for result...")        
 
 
 
@@ -55,7 +53,7 @@ def download_and_extract_full_md(zip_url: str, temp_dir: str) -> Optional[str]:
             return None
 
         # Extract full.md from ZIP
-        print(f"Extracting full.md from ZIP...")
+        logger.info(f"Extracting full.md from ZIP...")
         with zipfile.ZipFile(zip_file_path, "r") as zip_ref:
             # Find full.md in the ZIP (case-insensitive)
             full_md_paths = [
@@ -78,13 +76,13 @@ def download_and_extract_full_md(zip_url: str, temp_dir: str) -> Optional[str]:
         return full_md_abs_path
 
     except requests.exceptions.RequestException as e:
-        print(f"❌ Failed to download ZIP: {str(e)}")
+        logger.error(f"❌ Failed to download ZIP: {str(e)}")
         return None
     except zipfile.BadZipFile as e:
-        print(f"❌ Invalid ZIP file: {str(e)}")
+        logger.error(f"❌ Invalid ZIP file: {str(e)}")
         return None
     except Exception as e:
-        print(f"❌ Extraction failed: {str(e)}")
+        logger.error(f"❌ Extraction failed: {str(e)}")
         return None
 
 
