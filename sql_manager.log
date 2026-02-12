@@ -10,3 +10,6 @@
 2026-01-28 22:55:55 - AdvancedBBLogger - INFO - sql_functions_v3.py:326 - 表初始化成功！
 2026-01-28 22:56:12 - AdvancedBBLogger - INFO - sql_functions_v3.py:326 - 表初始化成功！
 2026-01-28 22:56:12 - AdvancedBBLogger - INFO - sql_functions_v3.py:326 - 表初始化成功！
+2026-02-09 20:06:01 - AdvancedBBLogger - INFO - sql_functions_v3.py:326 - 表初始化成功！
+2026-02-09 20:06:01 - AdvancedBBLogger - INFO - sql_functions_v3.py:326 - 表初始化成功！
+2026-02-09 20:06:06 - AdvancedBBLogger - ERROR - dify_functions.py:58 - 请求失败: HTTPConnectionPool(host='localhost', port=80): Max retries exceeded with url: /v1/chat-messages (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001FF9F634500>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。'))

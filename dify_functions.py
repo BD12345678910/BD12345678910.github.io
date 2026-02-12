@@ -5,8 +5,16 @@ from typing import Dict, Any
 import time
 from sql_functions_v3 import SQLManager as sql_functions
 from logger import logger
+from celery import Celery
+app = Celery('tasks', broker='redis://localhost:6379/0')
+
+# 限制Worker并发数为5
+app.conf.worker_concurrency = 5
+
 api_key = "app-E5mnWlXIOEKgaIJdlecPoKYr"
 url = "http://localhost/v1/chat-messages"
+
+@app.task
 def call_dify_workflow(
     stu_id: int,
     teacher_id: int,
@@ -50,5 +58,8 @@ def call_dify_workflow(
         logger.error(f"请求失败: {str(e)}")
     except KeyError:
         logger.error("响应格式错误，缺少预期的键")
+
 print(call_dify_workflow(0,0,0,'what is AI?','test_user','http://localhost/v1/chat-messages','' ,''))
+
+
 
